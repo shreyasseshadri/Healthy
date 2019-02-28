@@ -1,2 +1,2 @@
-# Hooli
-A car rental system for Software Engineering project
+# Healthy
+A healthcare app
