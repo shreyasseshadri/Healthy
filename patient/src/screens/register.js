@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, Text,StyleSheet } from 'react-native';
+import { Button, View, ScrollView,Text,StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
@@ -7,9 +7,7 @@ const Form = t.form.Form;
 const User = t.struct({
   email: t.String,
   name: t.String,
-  Doctor_register_number : t.String,
-  hospital: t.String,
-  speaciality: t.String,
+  Blood_type:t.String,
   phone: t.String,
   password: t.String,
   confirm_password: t.String
@@ -43,17 +41,22 @@ class Register extends React.Component {
    handleSubmit = () => {
     const value = this._form.getValue(); 
     console.log('value: ', value);
+    this.props.navigation.navigate('Login');
   }
 
 render() {
  return (
-  <View style={styles.container}>
-      <Form  ref={c => this._form = c} type={User} options={options} />
-      <Button
-          title="Sign Up!"
-          onPress={this.handleSubmit}
-        />
-  </View>
+  <ScrollView>
+      <View style={styles.container}>
+  
+  <Form  ref={c => this._form = c} type={User} options={options} />
+  <Button
+      title="Sign Up!"
+      onPress={this.handleSubmit}
+    />
+</View>
+  </ScrollView>
+  
 );
 }
 }

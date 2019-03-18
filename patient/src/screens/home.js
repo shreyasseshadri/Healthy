@@ -1,21 +1,28 @@
-import React from 'react';
-import { Button, View, Text } from 'react-native';
-class Home extends React.Component {
-  static navigationOptions = {
-    title: 'Home'
-   };
-render() {
- return (
-  <View style={{ 
-   flex: 1,
-   alignItems:'center',
-   justifyContent:'center'
-  }}>
-  <Button title="Logout"
-    onPress={() => this.props.navigation.navigate('Login')}
-   />
-  </View>
-);
+import React, {Component} from 'react';
+import {
+  View,
+  Button,
+  StyleSheet
+} from 'react-native';
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+  }
+});
+
+class Home extends Component {
+  render () {
+    return (
+      <View style={styles.container}>
+        <Button onPress={() => this.props.navigation.navigate("Login")} title="Logout!!" />
+      </View>
+    );
+  }
 }
-}
+
+
+
 export default Home;

@@ -1,8 +1,20 @@
-/** @format */
+// /** @format */
 
-import {AppRegistry} from 'react-native';
-import App from './App';
+import React, { Component } from 'react';
+import { AppRegistry, Dimensions } from 'react-native';
+import { createDrawerNavigator,createAppContainer } from 'react-navigation';
 import {name as appName} from './app.json';
-console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+import SideMenu from './src/components/sidemenu'
+import stackNav from './src/components/stacknav';
 
-AppRegistry.registerComponent(appName, () => App);
+const App = createDrawerNavigator({
+  Item1: {
+      screen: stackNav,
+
+    }
+  }, {
+    contentComponent: SideMenu,
+    drawerWidth: Dimensions.get('window').width - 120,  
+});
+
+AppRegistry.registerComponent(appName, () => createAppContainer(App));

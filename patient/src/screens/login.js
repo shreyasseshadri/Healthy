@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
 export default class LoginPage extends Component {
     static navigationOptions = {
-        title: 'Register'
+        title: 'Login'
     };
     handleSubmit = () => {
     const value = this._form.getValue(); 
@@ -46,7 +46,7 @@ export default class LoginPage extends Component {
             <View style={{paddingTop:20}} >
                 <Button 
                     title="Register"
-                    style={{paddingTop:20,marginTop:20}}
+                    
                     onPress={() => this.props.navigation.navigate('Register')}
                 />
             </View>
