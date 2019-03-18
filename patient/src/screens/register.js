@@ -10,9 +10,23 @@ const User = t.struct({
   Doctor_register_number : t.String,
   hospital: t.String,
   speaciality: t.String,
-  phone:t.String
+  phone: t.String,
+  password: t.String,
+  confirm_password: t.String
 });
 
+var options = {
+  fields: {
+      password: {
+      password: true,
+      secureTextEntry: true
+      },
+      confirm_password: {
+        password: true,
+        secureTextEntry: true
+      }
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +48,7 @@ class Register extends React.Component {
 render() {
  return (
   <View style={styles.container}>
-      <Form  ref={c => this._form = c} type={User} />
+      <Form  ref={c => this._form = c} type={User} options={options} />
       <Button
           title="Sign Up!"
           onPress={this.handleSubmit}
