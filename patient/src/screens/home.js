@@ -64,17 +64,18 @@ class Home extends Component {
             <View>
                 <ScrollView>
                     <View style={styles.container}>
-                        <View style={styles.card}>
+                        <TouchableOpacity style={styles.card}
+                                          onPress={() => this.props.navigation.navigate("PrescriptionHistory")}>
                             <Image
                                 resizeMode={'cover'}
                                 style={styles.image}
                                 source={require('../images/doctor.jpg')}
                             />
                             <View style={styles.textView}>
-                                <Text style={{color: 'white', fontSize: 20, margin: 6}}>Prescriptions</Text>
-                                <Text style={{color: 'white', margin: 6}}>check prescriptions</Text>
+                                <Text style={{color: 'white', fontSize: 20, margin: 6}}>Prescription</Text>
+                                <Text style={{color: 'white', margin: 6}}>Prescription history</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                         <TouchableOpacity style={styles.card}
                                           onPress={() => this.props.navigation.navigate("conversation", {name: uname})}>
                             <Image

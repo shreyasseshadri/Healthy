@@ -9,6 +9,8 @@ import home from "../screens/home";
 import login from "../screens/login";
 import register from "../screens/register";
 import Chat from "../screens/chat";
+import Pre from "../screens/prescription";
+import PreHistory from "../screens/prescriptionHistory";
 import conversation from "../screens/conversation";
 import firstaid from "../screens/firstaid";
 import {withNavigation} from 'react-navigation';
@@ -60,6 +62,22 @@ const stackNav = createStackNavigator({
         screen: Chat,
         navigationOptions: ({navigation}) => ({
             title: "Doctor",
+            headerLeft: null,
+            gesturesEnabled: false,
+        })
+    },
+    Prescription: {
+        screen: Pre,
+        navigationOptions: ({navigation}) => ({
+            title: "Issue a prescription",
+            headerLeft: null,
+            gesturesEnabled: false,
+        })
+    },
+    PrescriptionHistory: {
+        screen: PreHistory,
+        navigationOptions: ({navigation}) => ({
+            title: "Prescription history",
             headerLeft: null,
             gesturesEnabled: false,
         })
