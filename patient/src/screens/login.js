@@ -43,11 +43,13 @@ export default class LoginPage extends Component {
                 title="Login"
                 onPress={this.handleSubmit}
             />
-            <Button 
-                title="Register"
-                style={{padding:20}}
-                onPress={() => this.props.navigation.navigate('Register')}
-            />
+            <View style={{paddingTop:20}} >
+                <Button 
+                    title="Register"
+                    style={{paddingTop:20,marginTop:20}}
+                    onPress={() => this.props.navigation.navigate('Register')}
+                />
+            </View>
         </View>
         );
     }
