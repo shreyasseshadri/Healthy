@@ -33,9 +33,13 @@ export default class LoginPage extends Component {
        // console.log('hell0:',this._form);
         const value = this._form.getValue(); 
         console.log('value: ', value);
-        this.props.navigation.navigate('Home',{
-            name : value.username ,
-        });
+        if(value != null)
+        {
+            this.props.navigation.replace('Home',{
+                name : value.username ,
+            });
+    
+        }
     }
     
     render() {
