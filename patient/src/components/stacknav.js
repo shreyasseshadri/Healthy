@@ -10,6 +10,7 @@ import login from "../screens/login";
 import register from "../screens/register";
 import Chat from "../screens/chat";
 import availdoctors from "../screens/availdoctors";
+import firstaid from "../screens/firstaid";
 import { withNavigation } from 'react-navigation';
 
 const stackNav =  createStackNavigator({
@@ -43,6 +44,14 @@ const stackNav =  createStackNavigator({
     screen: availdoctors,
     navigationOptions: ({navigation}) => ({
       title: "Available Doctors",
+      headerLeft: null,
+      gesturesEnabled: false,
+    })
+  },
+  firstaid:{
+    screen: firstaid,
+    navigationOptions: ({navigation}) => ({
+      title: "First Aid tips",
       headerLeft: null,
       gesturesEnabled: false,
     })

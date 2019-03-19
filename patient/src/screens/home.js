@@ -6,7 +6,6 @@ const { width, height } = Dimensions.get('window');
 import {Linking} from 'react-native'
 import { withNavigation } from 'react-navigation';
 
-
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -55,6 +54,7 @@ var styles = StyleSheet.create({
 class Home extends Component {
   render() {
     const uname = this.props.navigation.getParam('name', 'username');
+    global.username=uname;
     return (
       <View>
         <ScrollView>

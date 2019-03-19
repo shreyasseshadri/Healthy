@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-
 import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View,StyleSheet} from 'react-native';
 import { StackNavigator } from 'react-navigation';
@@ -10,6 +9,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const styles=StyleSheet.create({
     container: {
       paddingTop: 20,
+      position:'relative',
       flex: 1
     },
     navItemStyle: {
@@ -33,15 +33,20 @@ class SideMenu extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Icon name="close" onPress={() => this.props.navigation.closeDrawer()} size={20} style={{paddingLeft:10}}/>
-         {/* <Icon name="md-close" onPress={() => this.props.navigation.closeDrawer()}/> */}
+      <View style={{paddingLeft:20,top:5}}>
+    <Icon name={"user-circle"} size={40} color="green"/>
+    <Text>{"Hello, "+global.username}</Text>
+      </View>
+        {/* <Icon name="close" onPress={() => this.props.navigation.closeDrawer()} size={20} style={{paddingLeft:200,paddingTop:0}}/> */}
         <ScrollView>
           <View>
+         
             <View style={styles.navItemStyle}>
               <Text style={styles.navItemStyle} onPress={() => this.props.navigation.navigate('Register')}>
               Book Appointment(Reg)
               </Text>
             </View>
+            
             <View style={styles.navItemStyle}>
               <Text style={styles.navItemStyle} onPress={() => this.props.navigation.navigate('Login')}>
               View Appointment(Login)
@@ -53,8 +58,8 @@ class SideMenu extends Component {
               </Text>
             </View>
             <View style={styles.navItemStyle}>
-              <Text style={styles.navItemStyle} onPress={() => this.props.navigation.navigate('Login')}>
-              Insurance(Login)
+              <Text style={styles.navItemStyle} onPress={() => this.props.navigation.navigate('firstaid')}>
+              Insurance(firstaid)
               </Text>
             </View>
           </View>          

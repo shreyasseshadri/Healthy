@@ -20,7 +20,7 @@ export default class DoctorsChat extends Component{
             uname:''
         }
         this.state.uname = props.navigation.getParam('name', 'username');
-        var server = '10.53.108.51:7000';
+        var server = '192.168.1.111:7000';
         this.webs = new WebSocket('ws://'+server);
         this.sendReq=this.sendReq.bind(this);
     }
