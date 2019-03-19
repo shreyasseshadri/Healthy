@@ -31,11 +31,11 @@ export default class LoginPage extends Component {
     };
     handleSubmit = () => {
        // console.log('hell0:',this._form);
-    const value = this._form.getValue(); 
-    console.log('value: ', value);
-    this.props.navigation.navigate('Home',{
-        name : value.username ,
-      });
+        const value = this._form.getValue(); 
+        console.log('value: ', value);
+        this.props.navigation.navigate('Home',{
+            name : value.username ,
+        });
     }
     
     render() {

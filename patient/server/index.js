@@ -24,5 +24,4 @@ wss.on('connection', (client) => {
     console.log('Clients: ',Object.keys(clients.clientlist));
   })
   client.send(JSON.stringify(doc_list));
-  
 })

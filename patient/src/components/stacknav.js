@@ -8,7 +8,7 @@ import IOSIcon from "react-native-vector-icons/Ionicons";
 import home from "../screens/home";
 import login from "../screens/login";
 import register from "../screens/register";
-import DoctorsChat from "../screens/doctorschat";
+import Chat from "../screens/chat";
 import availdoctors from "../screens/availdoctors";
 import { withNavigation } from 'react-navigation';
 
@@ -47,10 +47,10 @@ const stackNav =  createStackNavigator({
       gesturesEnabled: false,
     })
   },
-  DoctorsChat:{
-    screen: DoctorsChat,
+  Chat:{
+    screen: Chat,
     navigationOptions: ({navigation}) => ({
-      title: "Doctors Chat",
+      title: "Doctor",
       headerLeft: null,
       gesturesEnabled: false,
     })
