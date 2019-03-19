@@ -1,51 +1,52 @@
 import React, { Component } from "react";
-import { View, Text, Image } from 'react-native';
-// import { Card, ListItem, Button, Icon } from 'react-native-elements';
-
-// const users = [
-// {
-//     name: 'brynn',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-// },
-// {
-//     name: 'brynn',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-// },
-// {
-//     name: 'brynn',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-// }
-// ]
-   
-// export default class DoctorsAvail extends Component{
-//     render(){
-//         return(
-//             <Card title="CARD WITH DIVIDER">
-//             {
-//                 users.map((u, i) => {
-//                     return (
-//                     <View key={i} 
-//                     // style={styles.user}
-//                     >
-//                         <Image
-//                         // style={styles.image}
-//                         resizeMode="cover"
-//                         source={{ uri: u.avatar }}
-//                         />
-//                         <Text 
-//                         // style={styles.name}
-//                         >{u.name}</Text>
-//                     </View>
-//                     );
-//                 })
-//             }
-//             </Card>
-//         );
-//     }
-// }
+import { View, Text, Image,Button } from 'react-native';
 
 export default class DoctorsChat extends Component{
+    constructor(props){
+        super();
+        this.state={
+            messege:"",
+        }
+        this.sendReq=this.sendReq.bind(this);
+        
+    }
+    sendReq(){
+        console.log('Executing function ');
+        var ws = new WebSocket('ws://192.168.1.111:7000');
+
+            
+          ws.onopen = () => {
+            // connection opened
+            ws.send('something'); // send a message
+            console.log(this.state);
+            this.setState({ messege: this.state.messege+"something" });
+          };
+  
+          ws.onmessage = (e) => {
+            // a message was received
+            console.log(e.data);
+            this.setState({ messege: this.state.messege+'\n'+e.data })
+          };
+  
+          ws.onerror = (e) => {
+            // an error occurred
+            console.log(e.message);
+          };
+  
+          ws.onclose = (e) => {
+            // connection closed
+            console.log(e.code, e.reason);
+          };
+    }
     render(){
-        return(<View/>);
+        return(
+        <View>
+            <Text>{this.state.messege}</Text>
+            <Button 
+                    title="Chat"
+                    onPress={this.sendReq}
+            />
+        </View>
+        );
     }
 }

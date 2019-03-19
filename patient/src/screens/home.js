@@ -1,5 +1,11 @@
-import React, {Component} from 'react';
-import { View, Button, StyleSheet, Text , Image, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { View, Button, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import Icon from "react-native-vector-icons/FontAwesome";
+import { Dimensions, ScrollView } from 'react-native';
+const { width, height } = Dimensions.get('window');
+import {Linking} from 'react-native'
+import { withNavigation } from 'react-navigation';
+
 
 var styles = StyleSheet.create({
   container: {
@@ -21,12 +27,25 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 24
   },
-  image:{
+  image: {
     width: '100%',
-    height: 200 ,
-    position:'absolute'
+    height: 200,
+    position: 'absolute'
   },
-  textView:{ 
+  button_style: {
+    borderWidth: 1,
+    borderColor: 'rgba(0.7,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    width: 60,
+    height: 60,
+    backgroundColor: '#fff',
+    borderRadius: 60,
+  },
+  textView: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignSelf: 'flex-end'
@@ -34,31 +53,64 @@ var styles = StyleSheet.create({
 });
 
 class Home extends Component {
-  render () {
+  render() {
+    const uname = this.props.navigation.getParam('name', 'username');
     return (
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <Image
-            resizeMode={'cover'}
-            style={styles.image}
-            source={require('../images/appointment.jpg')} 
-          />
-          <View style={styles.textView}>
-            <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Upcoming Appointment</Text>
-            <Text style={{ color: 'white', margin: 6 }}>No appointments booked</Text>
-          </View>
-        </View>
-        <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("DoctorsChat")}>
-            <Image
+      <View>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.card}>
+              <Image
                 resizeMode={'cover'}
                 style={styles.image}
-                source={require('../images/doctor.jpg')} 
-            />
-            <View style={styles.textView}>
-              <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Got problems?</Text>
-              <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
+                source={require('../images/appointment.jpg')}
+              />
+              <View style={styles.textView}>
+                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Upcoming Appointment</Text>
+                <Text style={{ color: 'white', margin: 6 }}>No appointments booked</Text>
+              </View>
             </View>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("availdoctors",{name:uname})}>
+              <Image
+                resizeMode={'cover'}
+                style={styles.image}
+                source={require('../images/doctor.jpg')}
+              />
+              <View style={styles.textView}>
+                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Got problems?</Text>
+                <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("availdoctors")}>
+              <Image
+                resizeMode={'cover'}
+                style={styles.image}
+                source={require('../images/doctor.jpg')}
+              />
+              <View style={styles.textView}>
+                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Got problems?</Text>
+                <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("availdoctors")}>
+              <Image
+                resizeMode={'cover'}
+                style={styles.image}
+                source={require('../images/doctor.jpg')}
+              />
+              <View style={styles.textView}>
+                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Got problems?</Text>
+                <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
+              </View>
+            </TouchableOpacity>
+
+          </View>
+        </ScrollView>
+        <View>
+          <TouchableOpacity style={styles.button_style}>
+            <Icon name={"ambulance"} size={30} color="red" onPress={() => Linking.openURL(`tel:8548950201`)}/>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -66,4 +118,4 @@ class Home extends Component {
 
 
 
-export default Home;
+export default withNavigation(Home);

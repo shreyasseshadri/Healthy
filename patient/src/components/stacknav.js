@@ -9,6 +9,7 @@ import home from "../screens/home";
 import login from "../screens/login";
 import register from "../screens/register";
 import DoctorsChat from "../screens/doctorschat";
+import availdoctors from "../screens/availdoctors";
 import { withNavigation } from 'react-navigation';
 
 const stackNav =  createStackNavigator({
@@ -38,10 +39,18 @@ const stackNav =  createStackNavigator({
       gesturesEnabled: false,
     })
   },
+  availdoctors:{
+    screen: availdoctors,
+    navigationOptions: ({navigation}) => ({
+      title: "Available Doctors",
+      headerLeft: null,
+      gesturesEnabled: false,
+    })
+  },
   DoctorsChat:{
     screen: DoctorsChat,
     navigationOptions: ({navigation}) => ({
-      title: "Available Doctors",
+      title: "Doctors Chat",
       headerLeft: null,
       gesturesEnabled: false,
     })
