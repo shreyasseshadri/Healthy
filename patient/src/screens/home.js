@@ -81,26 +81,15 @@ class Home extends Component {
                 <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("availdoctors")}>
+            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("firstaid")}>
               <Image
                 resizeMode={'cover'}
                 style={styles.image}
-                source={require('../images/doctor.jpg')}
+                source={require('../images/firstaid.jpg')}
               />
               <View style={styles.textView}>
-                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Got problems?</Text>
-                <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate("availdoctors")}>
-              <Image
-                resizeMode={'cover'}
-                style={styles.image}
-                source={require('../images/doctor.jpg')}
-              />
-              <View style={styles.textView}>
-                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>Got problems?</Text>
-                <Text style={{ color: 'white', margin: 6 }}>Chat with best doctors</Text>
+                <Text style={{ color: 'white', fontSize: 20, margin: 6 }}>First Aid tips</Text>
+                <Text style={{ color: 'white', margin: 6 }}>Emergency guidelines</Text>
               </View>
             </TouchableOpacity>
 
