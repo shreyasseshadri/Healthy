@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button, View, ScrollView,Text,StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
+import {AsyncStorage} from 'react-native';
+
 
 const Form = t.form.Form;
 
 const User = t.struct({
   email: t.String,
+  username: t.String,
   name: t.String,
   // Blood_type:t.String,
   phone: t.String,
@@ -35,19 +38,70 @@ const styles = StyleSheet.create({
 });
 
 class Register extends React.Component {
+
   static navigationOptions = {
     title: 'Register'
    };
+  
+
 
    handleSubmit = () => {
-   
+       const _storeData = async () => {
+           try {
+               await AsyncStorage.clear();
+               await AsyncStorage.setItem('Username',value.username);
+               await AsyncStorage.setItem('Password',value.password);
+
+           } catch (error) {
+               // Error saving data
+               console.log(error);
+           }
+       };
     const value = this._form.getValue(); 
     if(value != null && this.isvalid(value))
     {
-        this.props.navigation.replace('Login',{
-            name : value.username ,
-        });
 
+        fetch('http://10.53.105.13:3000/register/patient', {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              username: value.username,
+              name:value.name,
+              password: value.password,
+              email: value.email,
+              phone: value.phone,
+              dob: 'eg_dob'
+          }),
+          }).then(function(response){
+              return response.json();
+            })
+            .then(json => {
+              console.log('success ? :',json.success)
+              if(json.success)
+              {
+
+                _storeData().then(
+                    error => {console.log(error);
+                    });
+                this.props.navigation.replace('Login');
+              }
+              else
+              {
+                  console.log('Error sent from server');
+                  alert(json.error);
+              }
+              console.log(json);
+            })
+            .catch(function(error) {
+            console.log('There has been a problem with your fetch operation: ' + error.message);
+             // ADD THIS THROW error
+              throw error;
+            });  
     }
   }
 isvalid(value)
