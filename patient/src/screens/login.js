@@ -45,7 +45,7 @@ export default class LoginPage extends Component {
             if (result.username !== null) {
 
 
-                fetch('http://10.53.105.13:3000/auth/patient', {
+                fetch('http://'+global.server+'/auth/patient', {
                     method: 'POST',
                     mode: 'cors',
                     credentials: 'include',
@@ -103,7 +103,7 @@ export default class LoginPage extends Component {
         };
         if (value != null) {
 
-            fetch('http://10.53.105.13:3000/auth/patient', {
+            fetch('http://'+global.server+'auth/patient', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include',

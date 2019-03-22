@@ -40,7 +40,7 @@ export default class DoctorsChat extends Component {
     }
 
     componentWillMount() {
-        fetch('http://10.53.105.13:3000/info/doctors', {
+        fetch('http://'+global.server+'/info/doctors', {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',

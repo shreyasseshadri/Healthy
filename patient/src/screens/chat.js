@@ -9,8 +9,8 @@ export default class Chat extends React.Component {
             messages: [],
             init: false,
         }
-        var server = '10.53.105.13:3000/chat';
-        this.webs = new WebSocket('ws://' + server);
+
+        this.webs = new WebSocket('ws://' +global.server+'/chat');
         this.uname = props.navigation.getParam('uname', 'username');
         this.doctor = props.navigation.getParam('doctor', null);
     }
@@ -47,8 +47,10 @@ export default class Chat extends React.Component {
             this.setState({init: false});
             this.webs.onmessage = (e) => {
                 // a message from doctor through server
-                var msg = e.data
-                if (e.chat.from !== this.uname) {
+                var msg = JSON.parse(e.data);
+                console.log('e:',e);
+                console.log('data: ',msg);
+                if (msg.chat.from !== this.uname) {
 
                     var joined = this.preprocess(e.chat).concat(this.state.messages);
                     this.setState({messages: joined});
@@ -56,7 +58,7 @@ export default class Chat extends React.Component {
             };
 
 
-            fetch('http://10.53.105.13:3000/chat/history', {
+            fetch('http://'+global.server+'/chat/history', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include',

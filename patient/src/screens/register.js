@@ -47,7 +47,7 @@ class Register extends React.Component {
         const value = this._form.getValue();
         if (value != null && this.isvalid(value)) {
 
-            fetch('http://10.53.105.13:3000/register/patient', {
+            fetch('http://'+global.server+'/register/patient', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include',
