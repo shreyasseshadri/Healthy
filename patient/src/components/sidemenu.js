@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {StackNavigator} from 'react-navigation';
 import {PanResponder, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import {AsyncStorage} from 'react-native';
 
 
 const styles = StyleSheet.create({
@@ -32,6 +33,9 @@ const getDirection = ({moveX, moveY, dx, dy}) => {
 
 }
 
+const _cleardata = async (resolve) => {
+      await AsyncStorage.clear();
+};
 class SideMenu extends Component {
 
     constructor(props) {
@@ -74,7 +78,7 @@ class SideMenu extends Component {
                             </Text>
                         </View>
                         <View style={styles.navItemStyle}>
-                            <Text style={styles.navItemStyle} onPress={() => this.props.navigation.navigate('Login')}>
+                            <Text style={styles.navItemStyle} onPress={() => {_cleardata();this.props.navigation.navigate('Login');}}>
                                 Logout
                             </Text>
                         </View>

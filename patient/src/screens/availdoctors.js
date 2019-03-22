@@ -30,76 +30,43 @@ export default class DoctorsChat extends Component {
         this.state = {
             messege: "",
             doctors: [],
-            conn_open: false,
+
             uname: '',
             loading: true,
             error: false,
         }
         this.state.uname = props.navigation.getParam('name', 'username');
-        var server = '10.53.108.51:7000';
-        this.webs = new WebSocket('ws://' + server);
         this.sendReq = this.sendReq.bind(this);
     }
 
     componentWillMount() {
-        console.log('Executing function ');
-        var ws = this.webs;
-        ws.onopen = () => {
-            // connection opened
+        fetch('http://10.53.105.13:3000/info/doctors', {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        }).then(function (response) {
+            return response.json();
+        }).then(json => {
+            this.setState({doctors: json.doctors});
 
-            const message = {'username': this.state.uname, 'type': 'doc_list', 'message': 'requesting doctor list'};
-            this.setState({conn_open: true});
-            ws.send(JSON.stringify(message)); // send a message
-            // console.log(this.state);
-            // this.setState({ messege:''});
-        };
-
-        ws.onmessage = (e) => {
-            // a message was received
-            // console.log(JSON.parse(e.data));
-            this.state.doctors = JSON.parse(e.data);
-            this.setState({messege: this.state.messege + '\n' + e.data})
-            setTimeout(() => {
-                this.setState({loading: false});
-            }, 1000);
-            console.log(this.state.doctors);
-        };
-
-        ws.onerror = (e) => {
-            // an error occurred
-            console.log(e.message);
+        }).catch(function (error) {
             setTimeout(() => {
                 this.setState({loading: false, error: true});
             }, 1000);
-        };
 
-        ws.onclose = (e) => {
-            // connection closed
-            this.setState({conn_open: false});
-            console.log(e.code, e.reason);
-        };
+            throw error;
 
+        });
+        setTimeout(() => {
+            this.setState({loading: false});
+        }, 1000);
     }
 
     sendReq(doctor) {
-        var ws = this.webs;
-
-        // alert('requesting doctor');
-
-        // connection opened
-        if (this.state.conn_open) {
-
-            const message = {
-                'username': this.state.uname,
-                'type': 'requesting_doctor',
-                'doctor': '' + doctor,
-                'message': 'requesting sgsg' + ' ' + doctor
-            };
-            ws.send(JSON.stringify(message)); // send a message
-            // console.log(this.state);
-            this.setState({messege: ''});
-        }
-
         //if accepted then
         this.props.navigation.navigate('Chat', {
             uname: this.state.uname,
@@ -118,9 +85,6 @@ export default class DoctorsChat extends Component {
                 {!this.state.error &&
                 <View styles={styles.container}>
                     {this.state.doctors.map((person, index) => (
-                        // <View key={index} style={styles.container}>
-                        // <Button key={index} onPress={() => this.sendReq(person.name)} title={person.name} style={{paddingTop:100}}></Button>
-                        // </View>
                         <TouchableHighlight
                             key={index}
                             onPress={() => this.sendReq(person.name)}
