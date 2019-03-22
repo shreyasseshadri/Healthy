@@ -1,5 +1,17 @@
 import React, {Component} from "react";
-import {View, Text, Button, TouchableHighlight, StyleSheet, ActivityIndicator, ScrollView} from 'react-native';
+import {
+    View,
+    Text,
+    Button,
+    TouchableHighlight,
+    StyleSheet,
+    Dimensions,
+    ActivityIndicator,
+    ScrollView,
+    TouchableOpacity, Linking
+} from 'react-native';
+import Icon from "react-native-vector-icons/FontAwesome";
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -16,6 +28,19 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    button_style: {
+        borderWidth: 1,
+        borderColor: 'rgba(0.7,0,0,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 10,
+        right: 8,
+        width: 60,
+        height: 60,
+        backgroundColor: '#fff',
+        borderRadius: 60,
     },
     username: {
         marginLeft: 10,
@@ -40,7 +65,7 @@ export default class DoctorsChat extends Component {
     }
 
     componentWillMount() {
-        fetch('http://'+global.server+'/info/doctors', {
+        fetch('http://'+global.server+'/chat/conversations', {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
@@ -51,7 +76,7 @@ export default class DoctorsChat extends Component {
         }).then(function (response) {
             return response.json();
         }).then(json => {
-            this.setState({doctors: json.doctors});
+            this.setState({doctors: json.conversations});
 
         }).catch(function (error) {
             setTimeout(() => {
@@ -78,8 +103,8 @@ export default class DoctorsChat extends Component {
 
     render() {
         return (
-            <View>
-                <ScrollView>
+            <View style={{flex:1}}>
+                <ScrollView >
                     <View styles={styles.container}>
                         <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff"/>
                     </View>
@@ -88,10 +113,10 @@ export default class DoctorsChat extends Component {
                         {this.state.doctors.map((person, index) => (
                             <TouchableHighlight
                                 key={index}
-                                onPress={() => this.sendReq(person.name)}
+                                onPress={() => this.sendReq(person.doctor)}
                                 underlayColor="#f3f3f3" style={styles.list_item}>
                                 <View style={styles.list_item_body}>
-                                    <Text style={styles.username}>{person.name}</Text>
+                                    <Text style={styles.username}>{person.doctor}</Text>
                                 </View>
                             </TouchableHighlight>
                         ))}
@@ -104,6 +129,12 @@ export default class DoctorsChat extends Component {
                         </View>
                     }
                 </ScrollView>
+                <View>
+                    <TouchableOpacity style={styles.button_style}>
+                        <Icon name={"plus"} size={30} color="green"
+                              onPress={() => this.props.navigation.navigate('availdoctors',{name:this.uname})}/>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }

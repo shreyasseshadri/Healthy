@@ -83,8 +83,8 @@ class Home extends Component {
                                 source={require('../images/appointment.jpg')}
                             />
                             <View style={styles.textView}>
-                                <Text style={{color: 'white', fontSize: 20, margin: 6}}>Got problems?</Text>
-                                <Text style={{color: 'white', margin: 6}}>Chat with best doctors</Text>
+                                <Text style={{color: 'white', fontSize: 20, margin: 6}}>Chat</Text>
+                                <Text style={{color: 'white', margin: 6}}>Answer to patient queries</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.card}

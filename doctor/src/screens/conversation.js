@@ -29,7 +29,7 @@ export default class DoctorsChat extends Component {
         super();
         this.state = {
             messege: "",
-            doctors: [],
+            patients: [],
 
             uname: '',
             loading: true,
@@ -40,7 +40,7 @@ export default class DoctorsChat extends Component {
     }
 
     componentWillMount() {
-        fetch('http://'+global.server+'/info/doctors', {
+        fetch('http://'+global.server+'/chat/conversations', {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
@@ -51,7 +51,8 @@ export default class DoctorsChat extends Component {
         }).then(function (response) {
             return response.json();
         }).then(json => {
-            this.setState({doctors: json.doctors});
+            console.log(json);
+            this.setState({patients: json.conversations});
 
         }).catch(function (error) {
             setTimeout(() => {
@@ -66,11 +67,11 @@ export default class DoctorsChat extends Component {
         }, 1000);
     }
 
-    sendReq(doctor) {
+    sendReq(patient) {
         //if accepted then
         this.props.navigation.navigate('Chat', {
             uname: this.state.uname,
-            doctor: doctor,
+            patient: patient,
             webs: this.webs
         })
 
@@ -78,33 +79,31 @@ export default class DoctorsChat extends Component {
 
     render() {
         return (
-            <View>
-                <ScrollView>
-                    <View styles={styles.container}>
-                        <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff"/>
+            <ScrollView>
+                <View styles={styles.container}>
+                    <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff"/>
+                </View>
+                {!this.state.error &&
+                <View styles={styles.container}>
+                    {this.state.patients.map((person, index) => (
+                        <TouchableHighlight
+                            key={index}
+                            onPress={() => this.sendReq(person.patient)}
+                            underlayColor="#f3f3f3" style={styles.list_item}>
+                            <View style={styles.list_item_body}>
+                                <Text style={styles.username}>{person.patient}            unread:{person.undelivered}</Text>
+                            </View>
+                        </TouchableHighlight>
+                    ))}
+                </View>
+                }
+                {
+                    this.state.error &&
+                    <View>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Server Error</Text>
                     </View>
-                    {!this.state.error &&
-                    <View styles={styles.container}>
-                        {this.state.doctors.map((person, index) => (
-                            <TouchableHighlight
-                                key={index}
-                                onPress={() => this.sendReq(person.name)}
-                                underlayColor="#f3f3f3" style={styles.list_item}>
-                                <View style={styles.list_item_body}>
-                                    <Text style={styles.username}>{person.name}</Text>
-                                </View>
-                            </TouchableHighlight>
-                        ))}
-                    </View>
-                    }
-                    {
-                        this.state.error &&
-                        <View>
-                            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Server Error</Text>
-                        </View>
-                    }
-                </ScrollView>
-            </View>
+                }
+            </ScrollView>
         );
     }
 }

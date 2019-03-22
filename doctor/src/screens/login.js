@@ -45,7 +45,7 @@ export default class LoginPage extends Component {
             if (result.username !== null) {
 
 
-                fetch('http://'+global.server+'/auth/patient', {
+                fetch('http://'+global.server+'/auth/doctor', {
                     method: 'POST',
                     mode: 'cors',
                     credentials: 'include',
@@ -79,7 +79,7 @@ export default class LoginPage extends Component {
                         throw error;
                     });
             }
-        })
+        });
 
     }
 
@@ -102,10 +102,8 @@ export default class LoginPage extends Component {
             }
         };
         if (value != null) {
-            //todo  : push this...added '/' before auth
 
-            //todo: make an issue for possible unhandled promise rejection on navigating to home page
-            fetch('http://'+global.server+'/auth/patient', {
+            fetch('http://'+global.server+'/auth/doctor', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include',

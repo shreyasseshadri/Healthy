@@ -12,11 +12,12 @@ export default class Chat extends React.Component {
 
         this.webs = new WebSocket('ws://' +global.server+'/chat');
         this.uname = props.navigation.getParam('uname', 'username');
-        this.doctor = props.navigation.getParam('doctor', null);
-        this.counter=1;
+        this.patient = props.navigation.getParam('patient', null);
+        this.counter=0;
     }
 
     preprocess(msgs) {
+        // console.error(msgs);
         var gc_message = [];
         // The 0 there is the key, which sets the date to the epoch
         for (var i = msgs.length - 1; i >= 0; i--) {
@@ -24,22 +25,22 @@ export default class Chat extends React.Component {
                 _id: this.counter,
                 text: msgs[i].msg,
                 user: {
-                    _id: 2,
-                    name: this.doctor,
+                    _id: 1,
+                    name: this.patient,
                 },
 
 
                 createdAt: new Date(0).setUTCSeconds(msgs[i].stamp)
             }
+            this.counter+=1;
             if (msgs[i].to !== this.uname) {
                 // gc_json._id=2;
                 gc_json.user = {
-                    _id: 1,
+                    _id: 2,
                     name: this.uname,
                 }
             }
             gc_message.push(gc_json);
-            this.counter+=1;
         }
         return gc_message;
     }
@@ -50,10 +51,8 @@ export default class Chat extends React.Component {
             this.webs.onmessage = (e) => {
                 // a message from doctor through server
                 var msg = JSON.parse(e.data);
-                console.log('e:',e);
-                console.log('data: ',msg);
+                console.log('data: ',msg.chat);
                 if (msg.chat.from !== this.uname) {
-
                     var joined = this.preprocess([msg.chat]).concat(this.state.messages);
                     this.setState({messages: joined});
                 }
@@ -69,7 +68,7 @@ export default class Chat extends React.Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    peer: this.doctor
+                    peer: this.patient
                 }),
             }).then(function (response) {
                 return response.json();
@@ -98,7 +97,7 @@ export default class Chat extends React.Component {
             this.webs.send(JSON.stringify({
                 type: "chat_msg",
                 chat: {
-                    to: this.doctor,
+                    to: this.patient,
                     msg: message.text,
                 },
             }));
@@ -109,7 +108,7 @@ export default class Chat extends React.Component {
         return <GiftedChat messages={this.state.messages}
                            onSend={messages => this.onSend(messages)}
                            user={{
-                               _id: 1,
+                               _id: 2,
                            }}
         />;
     }

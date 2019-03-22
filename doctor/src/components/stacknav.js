@@ -9,9 +9,8 @@ import home from "../screens/home";
 import login from "../screens/login";
 import register from "../screens/register";
 import Chat from "../screens/chat";
-import availdoctors from "../screens/availdoctors";
-import firstaid from "../screens/firstaid";
 import conversation from "../screens/conversation";
+import firstaid from "../screens/firstaid";
 import {withNavigation} from 'react-navigation';
 
 const stackNav = createStackNavigator({
@@ -41,10 +40,10 @@ const stackNav = createStackNavigator({
             gesturesEnabled: false,
         })
     },
-    availdoctors: {
-        screen: availdoctors,
+    conversation: {
+        screen: conversation,
         navigationOptions: ({navigation}) => ({
-            title: "Available Doctors",
+            title: "Conversations",
             headerLeft: null,
             gesturesEnabled: false,
         })
@@ -53,14 +52,6 @@ const stackNav = createStackNavigator({
         screen: firstaid,
         navigationOptions: ({navigation}) => ({
             title: "First Aid tips",
-            headerLeft: null,
-            gesturesEnabled: false,
-        })
-    },
-    conversation: {
-        screen: conversation,
-        navigationOptions: ({navigation}) => ({
-            title: "Your Conversations",
             headerLeft: null,
             gesturesEnabled: false,
         })
