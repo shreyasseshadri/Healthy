@@ -1,5 +1,12 @@
 import React from "react";
 import {GiftedChat} from "react-native-gifted-chat";
+import {AsyncStorage} from 'react-native';
+
+
+const _backup = async (doc,messages) => {
+    console.log('Stored messages ',messages);
+    await AsyncStorage.setItem(doc+'Messages',messages);
+};
 
 export default class Chat extends React.Component {
     constructor(props) {
@@ -10,10 +17,10 @@ export default class Chat extends React.Component {
             init: false,
         }
 
-        this.webs = new WebSocket('ws://' +global.server+'/chat');
+        this.webs = new WebSocket('ws://' + global.server + '/chat');
         this.uname = props.navigation.getParam('uname', 'username');
         this.doctor = props.navigation.getParam('doctor', null);
-        this.counter=1;
+        this.counter = 1;
     }
 
     preprocess(msgs) {
@@ -39,28 +46,24 @@ export default class Chat extends React.Component {
                 }
             }
             gc_message.push(gc_json);
-            this.counter+=1;
+            this.counter += 1;
         }
+        console.log(gc_message,'I chut');
         return gc_message;
     }
 
-    componentWillMount() {
-        if (!this.state.init) {
-            this.setState({init: false});
-            this.webs.onmessage = (e) => {
-                // a message from doctor through server
-                var msg = JSON.parse(e.data);
-                console.log('e:',e);
-                console.log('data: ',msg);
-                if (msg.chat.from !== this.uname) {
 
-                    var joined = this.preprocess([msg.chat]).concat(this.state.messages);
-                    this.setState({messages: joined});
-                }
-            };
+    async get_history() {
+        let messages;
+        try {
+
+            messages = await AsyncStorage.getItem(this.doctor+'Messages');
+            if(messages===null) throw "null";
+            console.log('Messages through local storage',messages);
+            messages=JSON.parse(messages);
 
 
-            fetch('http://'+global.server+'/chat/history', {
+            let resp= await fetch('http://'+global.server+'/chat/unread', {
                 method: 'POST',
                 mode: 'cors',
                 credentials: 'include',
@@ -69,31 +72,105 @@ export default class Chat extends React.Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    peer: this.doctor
+                    peer: this.doctor,
                 }),
-            }).then(function (response) {
-                return response.json();
-            })
-                .then(json => {
+            });
 
-                    if (json.success) {
-                        var joined = this.preprocess(json.history).concat(this.state.messages);
-                        // joined=this.state.messages.concat(joined);
-                        this.setState({messages: joined});
-                    }
-                })
-                .catch(function (error) {
-                    throw error;
+
+            let json=await resp.json();
+            console.log('Unread ',json);
+            if(json.success)
+            {
+                // messages=messages.concat(this.preprocess(json.unread));
+                messages=this.preprocess(json.unread).concat(messages);
+
+            }
+            // else messages=[];
+
+        } catch (e) {
+            try {
+                let response = await fetch('http://' + global.server + '/chat/history', {
+                    method: 'POST',
+                    mode: 'cors',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        peer: this.doctor
+                    }),
                 });
+                let json = await response.json();
+                console.log(this.doctor);
+                console.log(json);
+                if (json.success) {
+                    // this.preprocess()
+                    // console.log(json.history,'FML');
+                    let temp=this.preprocess(json.history);
+                    console.log(temp);
+                    messages = temp.concat(this.state.messages);
+                    // joined=this.state.messages.concat(joined);
+                }
+                else messages=[];
+                console.log('Messages through server ',messages)
+            } catch (e) {
+                console.error(e);
+                //    net error
+            }
+        } finally {
+            await AsyncStorage.removeItem('Messages');
+        }
+        console.log('Returning ',messages);
+        return messages;
+    }
 
+    componentDidMount() {
 
+        if (!this.state.init) {
+            // alert('Component Did Mount() ')
+            this.setState({init: false});
+
+            this.get_history().then((history) => {
+                this.setState({messages: history});
+            });
+
+            this.webs.onmessage = async (e) => {
+                // a message from doctor through server
+                var msg = JSON.parse(e.data);
+                // console.log('e:', e);
+                // console.log('data: ', msg);
+
+                //Translation
+                // msg.chat.msg = await this.translate_msg(msg.chat.msg);
+                if (msg.chat.from !== this.uname) {
+
+                    var x=this.preprocess([msg.chat])
+                    var joined = x.concat(this.state.messages);
+                    this.setState({messages: joined});
+
+                }
+            };
+
+            //get here and remove
+            //error:
         }
     }
 
+    componentWillUnmount() {
+
+        console.log('Bye Bye!!!!!!!');
+        // _backup()
+        console.log(this.state.messages);
+        _backup(this.doctor,JSON.stringify(this.state.messages));
+    }
+
     onSend(messages = []) {
+        console.log(messages);
+        console.log(this.state.messages)
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
-        }))
+        }));
         messages.forEach(message => {
             this.webs.send(JSON.stringify({
                 type: "chat_msg",

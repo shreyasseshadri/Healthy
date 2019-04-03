@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
 
 
 const _retrieveData = async (resolve) => {
-    let username = await AsyncStorage.getItem('Username');
-    let password = await AsyncStorage.getItem('Password');
 
-    return JSON.stringify({'username': username, 'password': password});
+    let credentials = await AsyncStorage.getItem('Credentials');
+    return credentials;
 
 };
+
 
 
 export default class LoginPage extends Component {
@@ -42,8 +42,7 @@ export default class LoginPage extends Component {
         _retrieveData().then((result) => {
 
             result = JSON.parse(result);
-            if (result.username !== null) {
-
+            if (result!==null) {
 
                 fetch('http://'+global.server+'/auth/patient', {
                     method: 'POST',
@@ -70,8 +69,7 @@ export default class LoginPage extends Component {
                                 }
                             );
 
-                        } else
-                            alert("Invalid Username or password");
+                        }
 
                     })
                     .catch(function (error) {
@@ -92,19 +90,17 @@ export default class LoginPage extends Component {
         const value = this._form.getValue();
         const _storeData = async () => {
             try {
-                await AsyncStorage.clear();
-                await AsyncStorage.setItem('Username', value.username);
-                await AsyncStorage.setItem('Password', value.password);
+
+                var credentials={'username':value.username,'password':value.password};
+                await AsyncStorage.setItem('Credentials',JSON.stringify(credentials));
 
             } catch (error) {
                 // Error saving data
-                throw error;
+                // throw error;
             }
         };
-        if (value != null) {
-            //todo  : push this...added '/' before auth
+        if (value !== null) {
 
-            //todo: make an issue for possible unhandled promise rejection on navigating to home page
             fetch('http://'+global.server+'/auth/patient', {
                 method: 'POST',
                 mode: 'cors',

@@ -34,8 +34,9 @@ const getDirection = ({moveX, moveY, dx, dy}) => {
 }
 
 const _cleardata = async (resolve) => {
-      await AsyncStorage.clear();
+    await AsyncStorage.removeItem('Credentials');
 };
+
 class SideMenu extends Component {
 
     constructor(props) {
