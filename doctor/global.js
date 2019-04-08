@@ -1,2 +1,2 @@
 global.username=null;
-global.server='10.0.2.2:3000';
+global.server='10.53.70.239:3000';

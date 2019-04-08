@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, View, Text, StyleSheet} from 'react-native';
+import {Button, View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import t from 'tcomb-form-native';
 import {AsyncStorage} from 'react-native';
 
@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
         marginTop: 50,
         padding: 20,
     },
+    loading: {
+        justifyContent: 'center',
+        marginTop: 10,
+        padding: 10,
+    },
 });
 
 
@@ -37,8 +42,11 @@ const _retrieveData = async (resolve) => {
 
 
 export default class LoginPage extends Component {
-
-    componentWillMount() {
+    constructor(props) {
+        super();
+        this.state = {
+            loading: true,
+        }
         _retrieveData().then((result) => {
 
             result = JSON.parse(result);
@@ -70,17 +78,17 @@ export default class LoginPage extends Component {
                                 }
                             );
 
-                        } else
-                            alert("Invalid Username or password");
+                        }
 
                     })
                     .catch(function (error) {
                         // ADD THIS THROW error
-                        throw error;
+                        console.log("Fetch error")
                     });
+            }else{
+                this.setState({loading:false});
             }
         });
-
     }
 
     static navigationOptions = {
@@ -145,6 +153,9 @@ export default class LoginPage extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <View styles={styles.loading}>
+                    <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff"/>
+                </View>
                 <Form ref={c => this._form = c} type={User} options={options}/>
                 <Button
                     title="Login"

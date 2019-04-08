@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: "space-between",
     },
     username: {
         marginLeft: 10,
@@ -91,7 +92,8 @@ export default class DoctorsChat extends Component {
                             onPress={() => this.sendReq(person.patient)}
                             underlayColor="#f3f3f3" style={styles.list_item}>
                             <View style={styles.list_item_body}>
-                                <Text style={styles.username}>{person.patient}            unread:{person.undelivered}</Text>
+                                <Text style={styles.username}>{person.patient}</Text>
+                                <Text style={styles.username}>{person.undelivered}</Text>
                             </View>
                         </TouchableHighlight>
                     ))}
